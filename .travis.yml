@@ -1,2 +1,2 @@
 language: csharp
-solution: ODEPlotter.sln
+solution: ODEPlotter/ODEPlotter.sln
