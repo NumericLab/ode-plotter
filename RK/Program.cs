@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.IO;
 
 namespace RK
 {
@@ -91,55 +92,47 @@ namespace RK
 
         public override void F(double t, double[] Y, ref double[] FY)
         {
-            FY[0] = Y[1]; // пример математический маятник 
-            FY[1] = -Y[0]; // y''(t)+y(t)=0
-            // y1''(t) + y1(t) = 0
+            double epsilon = 0.7;
+            double delta = 1.5;
+            double p;
+            p = (Y[0] * Y[0] + Y[1] * Y[1] + Y[2] * Y[2] + Y[3] * Y[3] - 1);
+            FY[0] = -0.5 * Y[1] * Y[4] - 0.5 * Y[2] * Y[5] - 0.5 * Y[3] * Y[6] + 0.5 * Y[2] - 0.5 * Y[0] * p;
+            FY[1] = 0.5 * Y[0] * Y[4] + 0.5 * Y[2] * Y[6] - 0.5 * Y[3] * Y[5] - 0.5 * Y[3] - 0.5 * Y[1] * p;
+            FY[2] = 0.5 * Y[0] * Y[5] + 0.5 * Y[3] * Y[4] - 0.5 * Y[1] * Y[6] - 0.5 * Y[0] - 0.5 * Y[2] * p;
+            FY[3] = 0.5 * Y[0] * Y[6] + 0.5 * Y[1] * Y[5] - 0.5 * Y[2] * Y[4] + 0.5 * Y[1] - 0.5 * Y[3] * p;
+            FY[4] = (epsilon - delta) * (-Y[5] * Y[6] + 3 * (2 * Y[2] * Y[3] + 2 * Y[0] * Y[1]) * (Y[0] * Y[0] - Y[1] * Y[1] - Y[2] * Y[2] + Y[3] * Y[3]));
+            FY[5] = (1 - epsilon) / delta * (-Y[6] * Y[4] + 3 * (2 * Y[1] * Y[3] - 2 * Y[0] * Y[2]) * (Y[0] * Y[0] - Y[1] * Y[1] - Y[2] * Y[2] + Y[3] * Y[3]));
+            FY[6] = (delta - 1) / epsilon * (-Y[4] * Y[5] + 3 * (2 * Y[1] * Y[3] - 2 * Y[0] * Y[2]) * (2 * Y[2] * Y[3] + 2 * Y[0] * Y[1]));
+           
 
-            //y1'(t) = y2(t)
-            //y2'(t) = -y1(t)
+
         }
     }
 
-    public class TMyRK2 : TRungeKutta
-    {
-        public TMyRK2(int aN) : base(aN) { }
-
-        public override void F(double t, double[] Y, ref double[] FY)
-        {
-            FY[0] = Y[1]; 
-            FY[1] = -Y[0];
-            FY[2] = Y[0];
-        }
-    }
 
     class Program
     {
         static void Main(string[] args)
         {
-            var RK4 = new TMyRK(2);
+            var RK4 = new TMyRK(7);
 
-            double[] Y0 = { 0, 1 }; // зададим начальные условия y(0)=0, y'(0)=1
+            double[] Y0 = { 1,1, 0,2, 0,1, 0,3, 0,1, 1,2, 0,4 }; // зададим начальные условия y(0)=0, y'(0)=1
 
             RK4.SetInit(0, Y0);
+            StreamWriter write = new StreamWriter("Test.txt");
 
             while (RK4.GetCurrent() < 10) // решаем до 10
             {
-                Console.WriteLine("{0}\t{1}\t{2}", RK4.GetCurrent(), RK4.Y[0], RK4.Y[1]); // вывести t, y, y'
+                write.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}", Convert.ToString(RK4.GetCurrent()), Convert.ToString(RK4.Y[0]), Convert.ToString(RK4.Y[1]), Convert.ToString(RK4.Y[2]), Convert.ToString(RK4.Y[3]), Convert.ToString(RK4.Y[4]), Convert.ToString(RK4.Y[5]), Convert.ToString(RK4.Y[6]));
+
+                //Console.WriteLine("{0}\t{1}\t{2}", RK4.GetCurrent(), RK4.Y[0], RK4.Y[1]); // вывести t, y, y'
 
                 RK4.NextStep(0.01); // расчитать на следующем шаге, шаг интегрирования dt=0.01
             }
 
-            var RK4_new = new TMyRK2(3); 
-            double[] Y0_new = { 0, 1, 2 };
-            RK4_new.SetInit(0, Y0_new); 
-            while (RK4_new.GetCurrent() < 10) // решаем до 10
-            {
-                Console.WriteLine("{0}\t{1}\t{2}\t{3}", RK4_new.GetCurrent(), RK4_new.Y[0], RK4_new.Y[1], RK4_new.Y[2]); // вывести t, y, y'
-                
-                RK4_new.NextStep(0.01); // расчитать на следующем шаге, шаг интегрирования dt=0.01
-            }
 
-            Thread.Sleep(5000);
+            write.Close();
+            //Thread.Sleep(5000);
         }
     }
 }
