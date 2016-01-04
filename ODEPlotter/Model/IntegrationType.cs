@@ -1,7 +1,9 @@
 ﻿namespace ODEPlotter.Model
 {
-    public class IntegrationType
+    public class OdeIntegrationType
     {
+
+
         public enum Type
         {
             RungeKutta,
