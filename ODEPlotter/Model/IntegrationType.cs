@@ -1,13 +1,17 @@
-﻿namespace ODEPlotter.Model
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace ODEPlotter.Model
 {
     public class OdeIntegrationType
     {
+        public static List<string> Types = Enum.GetNames(typeof (TypesEnum)).ToList();
 
-
-        public enum Type
+        private enum TypesEnum
         {
-            RungeKutta,
-            Second
+            RungeKutta = 1,
+            Second = 2
         }
     }
 }

@@ -1,4 +1,8 @@
-﻿namespace ODEPlotter
+﻿using System;
+using System.Windows;
+using ODEPlotter.ViewModel;
+
+namespace ODEPlotter
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -9,5 +13,6 @@
         {
             InitializeComponent();
         }
+
     }
 }
