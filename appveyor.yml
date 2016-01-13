@@ -1,0 +1,10 @@
+-
+  branches:
+    only:
+    - master
+
+  before_build:
+    - nuget restore ODEPlotter.sln
+
+  build_script: 
+    - msbuild ODEPlotter.sln /p:Configuration=Release /t:Rebuild
