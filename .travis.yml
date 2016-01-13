@@ -1,2 +1,4 @@
 language: csharp
 solution: ODEPlotter.sln
+before_script:
+  - nuget restore ODEPlotter.sln
