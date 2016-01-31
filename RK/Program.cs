@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 
 namespace RK
@@ -119,7 +120,15 @@ namespace RK
 
             while (rk4.GetCurrent() < 10) // решаем до 10
             {
-                write.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}", Convert.ToString(rk4.GetCurrent()), Convert.ToString(rk4.Y[0]), Convert.ToString(rk4.Y[1]), Convert.ToString(rk4.Y[2]), Convert.ToString(rk4.Y[3]), Convert.ToString(rk4.Y[4]), Convert.ToString(rk4.Y[5]), Convert.ToString(rk4.Y[6]));
+                write.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}", 
+                    Convert.ToString(rk4.GetCurrent(), CultureInfo.InvariantCulture), 
+                    Convert.ToString(rk4.Y[0], CultureInfo.InvariantCulture), 
+                    Convert.ToString(rk4.Y[1], CultureInfo.InvariantCulture), 
+                    Convert.ToString(rk4.Y[2], CultureInfo.InvariantCulture), 
+                    Convert.ToString(rk4.Y[3], CultureInfo.InvariantCulture), 
+                    Convert.ToString(rk4.Y[4], CultureInfo.InvariantCulture), 
+                    Convert.ToString(rk4.Y[5], CultureInfo.InvariantCulture), 
+                    Convert.ToString(rk4.Y[6], CultureInfo.InvariantCulture));
 
                 //Console.WriteLine("{0}\t{1}\t{2}", RK4.GetCurrent(), RK4.Y[0], RK4.Y[1]); // вывести t, y, y'
 
