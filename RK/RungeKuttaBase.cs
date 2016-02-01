@@ -39,12 +39,12 @@ namespace RK
             }
         }
 
-        public double GetCurrent() // вернуть текущее время
+        public double GetTime() // вернуть текущее время
         {
             return _t;
         }
 
-        public virtual void F(double t, double[] y, ref double[] fy)
+        public virtual void Equations(double t, double[] y, ref double[] fy)
         {
             throw new NotImplementedException();
         }
@@ -58,25 +58,25 @@ namespace RK
 
             int i;
 
-            F(_t, Y, ref _y1); // расчитать Y1
+            Equations(_t, Y, ref _y1); // расчитать Y1
 
             for (i = 0; i < N; i++)
             {
                 _yy[i] = Y[i] + _y1[i] * (dt / 2.0);
             }
-            F(_t + dt / 2.0, _yy, ref _y2); // расчитать Y2
+            Equations(_t + dt / 2.0, _yy, ref _y2); // расчитать Y2
 
             for (i = 0; i < N; i++)
             {
                 _yy[i] = Y[i] + _y2[i] * (dt / 2.0);
             }
-            F(_t + dt / 2.0, _yy, ref _y3); // расчитать Y3
+            Equations(_t + dt / 2.0, _yy, ref _y3); // расчитать Y3
 
             for (i = 0; i < N; i++)
             {
                 _yy[i] = Y[i] + _y3[i] * dt;
             }
-            F(_t + dt, _yy, ref _y4); // расчитать Y4
+            Equations(_t + dt, _yy, ref _y4); // расчитать Y4
 
             for (i = 0; i < N; i++)
             {
