@@ -6,7 +6,7 @@ namespace RK
 {
     public static class Solver
     {
-        static void SolveOnePoint(double tInit, double[] yInit, 
+        static double[] SolveOnePoint(double tInit, double[] yInit, 
             double epsilon, double delta, 
             double timePeriod, double timeStep)
         {
@@ -30,6 +30,7 @@ namespace RK
             }
             
             write.Close();
+            return rk4.Y;
         }
     }
 }
