@@ -5,13 +5,12 @@ namespace RK
     public class RungeKuttaBase
     {
         public int N;
-        double _t; // текущее время 
-        public double[] Y; // искомое решение Y[0] - само решение, Y[i] - i-тая производная решения
+        double _t; // current time 
+        public double[] Y; //solutions
 
-        readonly double[] _yy; 
-        double[] _y1, _y2, _y3, _y4;
+        private double[] _y1, _y2, _y3, _y4, _yy;
 
-        public RungeKuttaBase(int aN) // aN - размерность системы 
+        private void BaseSetup(int aN)
         {
             N = aN; // сохранить размерность системы
 
@@ -29,6 +28,17 @@ namespace RK
             _y4 = new double[N];
         }
 
+        public RungeKuttaBase(int aN) // aN - размерность системы 
+        {
+            BaseSetup(aN);
+        }
+
+        public RungeKuttaBase(int aN, double t0, double[] y0)
+        {
+            BaseSetup(aN);
+            SetInit(t0, y0);
+        }
+
         public void SetInit(double t0, double[] y0) // установить начальные условия.
         {                                           // t0 - начальное время, Y0 - начальное условие
             _t = t0;
@@ -39,12 +49,12 @@ namespace RK
             }
         }
 
-        public double GetTime() // вернуть текущее время
+        public double GetTime()
         {
             return _t;
         }
 
-        public virtual void Equations(double t, double[] y, ref double[] fy)
+        public virtual void Equations(double t, double[] y, ref double[] yDot)
         {
             throw new NotImplementedException();
         }
